@@ -6,28 +6,35 @@ defmodule GetFunctionalSupervision do
   use GenServer
 
   def start_link() do
-    GenServer.start_link(__MODULE__, %{}, name: :sup)
+    GenServer.start_link(__MODULE__, 0, name: :sup)
   end
 
-  def get do
-    GenServer.call(:sup, :get)
+  def credit(amount) do
+    GenServer.call(:sup, {:credit, amount})
   end
 
-  def set(value) do
-    GenServer.cast(:sup, {:set, value})
+  def debit(amount) do
+    GenServer.call(:sup, {:debit, amount})
+  end
+
+  def balance() do
+    GenServer.call(:sup, :balance)
   end
 
   def crash do
     GenServer.cast(:sup, {:crash})
   end
 
-
-  def handle_call(:get, _from, state) do
-    {:reply, state, state}
+  def handle_call({:credit, amount}, _from, state) do
+    {:reply, state + amount, state + amount}
   end
 
-  def handle_cast({:set, val}, state) do
-    {:noreply, Map.put(state, :test, val)}
+  def handle_call({:debit, amount}, _from, state) do
+    {:noreply, state - amount, state - amount}
+  end
+
+  def handle_call(:balance, _from, state) do
+    {:reply, state, state}
   end
 
   def handle_cast({:crash}, _state) do
