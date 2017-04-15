@@ -1,4 +1,4 @@
-defmodule GetFunctionalSupervision do
+defmodule GetFunctionalSupervision.Account do
   @moduledoc """
   Documentation for GetFunctionalSupervision.
   """
@@ -6,23 +6,27 @@ defmodule GetFunctionalSupervision do
   use GenServer
 
   def start_link() do
-    GenServer.start_link(__MODULE__, 0, name: :sup)
+    GenServer.start_link(__MODULE__, 0, name: :account)
   end
 
   def credit(amount) do
-    GenServer.call(:sup, {:credit, amount})
+    GenServer.call(:account, {:credit, amount})
   end
 
   def debit(amount) do
-    GenServer.call(:sup, {:debit, amount})
+    GenServer.call(:account, {:debit, amount})
   end
 
   def balance() do
-    GenServer.call(:sup, :balance)
+    GenServer.call(:account, :balance)
   end
 
   def crash do
-    GenServer.cast(:sup, {:crash})
+    GenServer.cast(:account, {:crash})
+  end
+
+  def get_pid do
+    Process.whereis(:account)
   end
 
   def handle_call({:credit, amount}, _from, state) do
@@ -38,7 +42,7 @@ defmodule GetFunctionalSupervision do
   end
 
   def handle_cast({:crash}, _state) do
-    Process.whereis(:sup)
+    Process.whereis(:account)
     |> Process.exit(:kill)
   end
 end
