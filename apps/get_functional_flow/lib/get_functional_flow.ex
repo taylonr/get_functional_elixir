@@ -10,6 +10,10 @@ defmodule GetFunctionalFlow do
     |> Kernel./(1_000_000)
   end
 
+  defp sort_desc(first, second) do
+    elem(first, 1) > elem(second, 1)
+  end
+
   @doc """
   Determines the number of words in a file
 
@@ -25,9 +29,9 @@ defmodule GetFunctionalFlow do
     |> Flow.partition()
     |> Flow.reduce(fn -> %{} end, fn word, acc ->
       Map.update(acc, word, 1, & &1 + 1)
-    end)
+      end)
     |> Enum.to_list()
-    |> Enum.sort(fn first, second -> elem(first, 1) > elem(second, 1) end)
+    |> Enum.sort(&(sort_desc(&1, &2)))
   end
 
   @doc """
