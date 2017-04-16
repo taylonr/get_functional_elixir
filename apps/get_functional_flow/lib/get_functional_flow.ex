@@ -18,7 +18,6 @@ defmodule GetFunctionalFlow do
 
   """
   def flow_count do
-
     File.stream!(Path.join(:code.priv_dir(:get_functional_flow), "kjv.txt"))
     |> Flow.from_enumerable()
     |> Flow.flat_map(&String.split(&1, [" ", "\n"], trim: true))
