@@ -8,7 +8,7 @@ defmodule GetFunctionalTree.Supervisor do
 
     def start_workers(sup, balance) do
         {:ok, stash} = Supervisor.start_child(sup, worker(GetFunctionalTree.Stash, [balance]))
-        Supervisor.start_child(sup, supervisor(GetFunctionalTree.Account, [stash]))
+        Supervisor.start_child(sup, supervisor(GetFunctionalTree.SubSupervisor, [stash]))
     end
 
     def init(_) do

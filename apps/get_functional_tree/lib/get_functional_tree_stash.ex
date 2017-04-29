@@ -13,6 +13,8 @@ defmodule GetFunctionalTree.Stash do
         GenServer.call(pid, :get_value)
     end
 
+    
+
     def handle_call(:get_value, _from, balance) do
         {:reply, balance, balance}
     end

@@ -46,3 +46,4 @@ defmodule GetFunctionalSupervision.Account do
     |> Process.exit(:kill)
   end
 end
+
