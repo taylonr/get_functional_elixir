@@ -29,7 +29,7 @@ defmodule GetFunctionalFlow do
     |> Flow.partition()
     |> Flow.reduce(fn -> %{} end, fn word, acc ->
       Map.update(acc, word, 1, & &1 + 1)
-      end)
+    end)
     |> Enum.to_list()
     |> Enum.sort(&(sort_desc(&1, &2)))
   end
